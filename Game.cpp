@@ -19,6 +19,9 @@ void Game::Reset()
 	ball.color = ConsoleColor::Cyan;
 	ResetBall();
 
+	gameWon = false;
+	gameOver = false;
+
 	// TODO #2 - Add this brick and 4 more bricks to the vector
 
 	bricks.clear();
@@ -80,6 +83,16 @@ void Game::Render() const
 	for (auto const& brick : bricks)
 	brick.Draw();
 
+	if (gameWon) {
+		Console::WordWrap(20, WINDOW_HEIGHT / 2, 40, "YOU WIN! Press 'R' to play again.");
+		Console::ResetColor();
+	}
+
+	if (gameOver) {
+		Console::WordWrap(20, WINDOW_HEIGHT / 2, 40, "You Lose! Press 'R' to play again.");
+		Console::ResetColor();
+	}
+
 	Console::Lock(false);
 }
 
@@ -102,10 +115,6 @@ void Game::CheckCollision()
 	}
 
 	// TODO #6 - If no bricks remain, pause ball and display (render) victory text with R to reset
-	if (gameWon) {
-		Console::WordWrap(20, WINDOW_HEIGHT / 2, 40, "YOU WIN! Press 'R' to play again.");
-		Console::ResetColor();
-	}
 
 	if (bricks.empty()) {
 		gameWon = true;
@@ -118,10 +127,6 @@ void Game::CheckCollision()
 	}
 
 	// TODO #7 - If ball touches bottom of window, pause ball and display (render) defeat text with R to reset
-	if (gameOver) {
-		Console::WordWrap(20, WINDOW_HEIGHT / 2, 40, "You Lose! Press 'R' to play again.");
-		Console::ResetColor();
-	}
 
 	if (ball.y_position >= WINDOW_HEIGHT - 1) {
 
